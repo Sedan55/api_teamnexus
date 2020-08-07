@@ -4,7 +4,7 @@ import logging
 
 TOKEN_API = ""
 
-blacklist = 'https://api.amz-review.com/?username=alpha.blacklist&password=45h6783&action=checkblacklist'
+blacklist = 'https://api.amz-review.com/?username=********&password=********&action=checkblacklist'
 book = "https://teamnexus.it/api/booking.php?token=" + TOKEN_API
 asin = "https://teamnexus.it/api/getasinbycode.php?token=" + TOKEN_API
 order = "https://teamnexus.it/api/insertorder.php?token=" + TOKEN_API
