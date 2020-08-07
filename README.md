@@ -1,2 +1,2 @@
-# api_teamnexus
-API per utilizzo della piattaforma del TEAM NEXUS
+# API TEAM NEXUS
+API scritte in Python per l'utilizzo della piattaforma del TEAM NEXUS.
