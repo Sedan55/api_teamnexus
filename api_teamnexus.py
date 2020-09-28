@@ -1,18 +1,44 @@
 import requests
 import json
 import logging
+import configparser
+import pathlib
 
-TOKEN_API = ""
+path = str(pathlib.Path(__file__).parent.absolute())
+config = configparser.ConfigParser()
+config.read(path + '/config.ini')
 
-blacklist = 'https://api.amz-review.com/?username=********&password=********&action=checkblacklist'
+TOKEN_API = config.get('TOKEN', 'TokenApi')
+USER = config.get('TOKEN', 'User')
+PASSWORD = config.get('TOKEN', 'Password')
+
+blacklist = "https://api.amz-review.com/?username=" + USER + "&password=" + PASSWORD + "&action=checkblacklist"
 book = "https://teamnexus.it/api/booking.php?token=" + TOKEN_API
 asin = "https://teamnexus.it/api/getasinbycode.php?token=" + TOKEN_API
 order = "https://teamnexus.it/api/insertorder.php?token=" + TOKEN_API
 review = "https://teamnexus.it/api/insertreview.php?token=" + TOKEN_API
 refund = "https://teamnexus.it/api/checkrimborso.php?token=" + TOKEN_API
 del_book = "https://teamnexus.it/api/deletebooking.php?token=" + TOKEN_API
+products = "https://teamnexus.it/api/getproducts.php?token=" +TOKEN_API
+screen = "https://teamnexus.it/api/uploadscreen.php?token=" +TOKEN_API
 
 logger = logging.getLogger(__name__)
+
+def getProducts(nazione = "IT", filtro = "ALL"):
+
+    data = {'nazione': nazione,
+            'filtro': filtro}
+
+    resp = requests.post(products, data)
+
+    if resp.status_code != 200:
+        msg = "API - Errore getProducts: " + str(resp.status_code)
+        logging.error(msg)
+
+    else:
+        msg = "API - getProducts: " + str(resp.text)
+        logging.info(msg)
+        return resp.text
 
 def checkblacklist(value):
     #0 blacklist, 1 no blacklist
@@ -90,7 +116,6 @@ def booking(codice, nazione = "IT"):
             logging.info(msg)
             return data
 
-
 def del_booking(id):
 
     data = {'id': id}
@@ -105,8 +130,6 @@ def del_booking(id):
         return -1
     else:
         return resp1
-  
-
 
 def insertorder(id, cliente, ordine, profilo, paypal):
 
@@ -138,7 +161,24 @@ def insertorder(id, cliente, ordine, profilo, paypal):
         logging.info(msg)
         #print("resp: " + resp[0])
         return resp1
+
+def insertScreen(asin, ordine, url):
     
+    data = {'asin': asin,
+            'ordine': ordine,
+            'url': url}
+
+    resp = requests.post(screen, data)
+
+    if resp.status_code != 200:
+        msg = "API - Errore insertScreen: " + str(resp.status_code)
+        logging.error(msg)
+
+    else:
+        msg = "API - insertScreen: " + str(resp.text)
+        logging.info(msg)
+        return resp.text
+
 def insertrev(asin, ordine, recensione):
     
     data = {'asin': asin,
@@ -173,6 +213,7 @@ def checkrefund(asin, ordine, nazione = "IT"):
 
     resp = requests.post(refund, data)
     resp1 = resp.json()
+    print(resp1)
 
     if resp.status_code != 200:
 
