@@ -1,0 +1,8 @@
+api_teamnexus:
+   endpoint: https://teamnexus.it/api/
+   token: 
+  
+   blacklist:
+      endpoint: https://api.amz-review.com/
+      user: 
+      password : 
