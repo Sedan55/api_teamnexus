@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='api_teamnexus',
-    packages=['module'],
-    package_dir={'module': 'module'},
+    packages=['api_teamnexus'],
+    package_dir={'api_teamnexus': 'api_teamnexus'},
     version='0.1.0',
     description='Api per l\'integrazione della piattaforma del TeamNexus',
     author='Me',
